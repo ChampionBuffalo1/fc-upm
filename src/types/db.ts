@@ -1,10 +1,5 @@
-type JsonValue =
-  | number
-  | string
-  | boolean
-  | unknown[]
-  | Record<string, JsonValue>;
-type Json = Record<string, Record<string, JsonValue>>;
+type JsonValue = number | string | boolean | unknown[];
+type Json = Record<string, JsonValue | Record<string, JsonValue>>;
 
 interface DateTime {
   created_at: Date;
