@@ -35,6 +35,10 @@ export async function PATCH(req: NextRequest) {
     });
 
   const validKeys = Object.keys(data).filter((k) => allowedKeys.includes(k));
+  if (validKeys.length === 0)
+    return NextResponse.json({
+      message: "no valid keys",
+    });
 
   const sqlQuery = `UPDATE \`page_config\` SET ${validKeys
     .map((k) => `${k} = ?`)
