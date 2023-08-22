@@ -26,4 +26,5 @@ class MySQL {
   }
 }
 
-export default new MySQL();
+const sql = new MySQL();
+export default sql;
