@@ -2,12 +2,14 @@
 
 import { Info } from "lucide-react";
 import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { Button, DatePicker, Form, Input } from "antd";
 
 type RequiredMark = boolean | "optional";
 
 export default function CreatePage() {
+  const router = useRouter();
   const [form] = Form.useForm();
   const [requiredMark, setRequiredMarkType] =
     useState<RequiredMark>("optional");
@@ -21,22 +23,25 @@ export default function CreatePage() {
   };
 
   const handleSubmit = useCallback(
-    (value: { "dt-picker": Dayjs; name: string }) =>
+    (value: { "ca-picker": Dayjs; name: string }) =>
       fetch("/api/page_config", {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify({
-          createdAt: value["dt-picker"].toISOString(),
+          created_at: value["ca-picker"].toISOString(),
           name: value.name,
         }),
+      }).then(() => {
+        router.refresh();
+        router.back();
       }),
-    []
+    [router]
   );
 
   return (
-    <div className="flex justify-center items-center w-full h-full">
-      <span>Text</span>
+    <div className="flex flex-col justify-center items-center w-full h-full">
+      <span className="text-xl mb-8">config details</span>
       <Form
-        className="w-72"
+        className="w-72 p-4"
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
@@ -45,7 +50,7 @@ export default function CreatePage() {
         initialValues={{ requiredMarkValue: requiredMark }}
       >
         <Form.Item
-          name="dt-picker"
+          name="ca-picker"
           label={<label className="text-white"> Created At</label>}
           rules={[
             {
