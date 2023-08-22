@@ -11,7 +11,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
-      <span className="text-xl m-4">Services</span>
+      <span className="text-xl m-4">Page Config Services</span>
       <div className="flex justify-center">
         {data.length !== 0 &&
           data.map((config) => <PageCard key={config.id} {...config} />)}
