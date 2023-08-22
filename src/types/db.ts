@@ -6,7 +6,7 @@ interface DateTime {
   updated_at: Date;
 }
 
-export interface PageConfig {
+export interface PageConfig extends DateTime {
   id: number;
   name: string;
 }
