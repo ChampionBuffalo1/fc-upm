@@ -7,9 +7,9 @@ export default function PageCard({ id, name }: PageConfig) {
     <div className="bg-white mx-2 p-4 flex items-center rounded-md justify-between">
       <Link
         href={{
-          pathname: "/page_config/service",
+          pathname: "/page_section",
           query: {
-            name,
+            id,
           },
         }}
       >
