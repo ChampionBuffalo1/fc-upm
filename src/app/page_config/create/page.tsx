@@ -3,10 +3,9 @@
 import { Info } from "lucide-react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
+import { RequiredMark } from "@/types/util";
 import { useCallback, useState } from "react";
 import { Button, DatePicker, Form, Input } from "antd";
-
-type RequiredMark = boolean | "optional";
 
 export default function CreatePage() {
   const router = useRouter();
