@@ -1,25 +1,42 @@
 "use client";
 
 import { Dayjs } from "dayjs";
-import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { RequiredMark } from "@/types/util";
-import { useCallback, useState } from "react";
-import { Button, DatePicker, Form, Input } from "antd";
+import { useCallback, useMemo } from "react";
+import JsonForm, { FormField } from "@/components/Forms";
 
 export default function CreatePage() {
   const router = useRouter();
-  const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] =
-    useState<RequiredMark>("optional");
+  const fields: FormField = useMemo(
+    () => [
+      {
+        type: "date",
+        name: "ca-picker",
+        label: "Created At",
+        required: "Created At is required",
+      },
+      {
+        type: "number",
+        name: "page_config_id",
+        label: "Page Id",
+        required: "Page Id is required",
+      },
+      {
+        type: "number",
+        name: "priority",
+        label: "Priority",
+        required: "Priority is required",
+      },
 
-  const onRequiredTypeChange = ({
-    requiredMarkValue,
-  }: {
-    requiredMarkValue: RequiredMark;
-  }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
+      {
+        type: "number",
+        name: "active",
+        label: "Active",
+        required: "Active is required",
+      },
+    ],
+    []
+  );
 
   const handleSubmit = useCallback(
     (value: {
@@ -47,93 +64,7 @@ export default function CreatePage() {
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
       <span className="text-xl mb-8">New Section</span>
-      <Form
-        className="w-72 p-4"
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        requiredMark={requiredMark}
-        onValuesChange={onRequiredTypeChange}
-        initialValues={{ requiredMarkValue: requiredMark }}
-      >
-        <Form.Item
-          name="ca-picker"
-          label={
-            <div className="flex flex-col">
-              <label className="text-white"> Created At</label>
-              <em className="text-gray-500 hover:text-gray-200 text-xs">
-                This will be set to current time when you submit
-              </em>
-            </div>
-          }
-          rules={[
-            {
-              type: "object" as const,
-            },
-          ]}
-        >
-          <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-        </Form.Item>
-
-        <Form.Item
-          name="page_config_id"
-          label={<label className="text-white">Page Id</label>}
-          rules={[
-            {
-              required: true,
-              message: "Please provide Page Id",
-              pattern: new RegExp(/^[0-9]+$/),
-            },
-          ]}
-          tooltip={{
-            title: "This is a required field",
-            icon: <Info size={16} color="white" />,
-          }}
-          initialValue={1}
-        >
-          <Input placeholder="Priority" />
-        </Form.Item>
-        <Form.Item
-          name="priority"
-          label={<label className="text-white">Priority</label>}
-          rules={[
-            {
-              required: true,
-              message: "Priority must be a number",
-              pattern: new RegExp(/^[0-9]+$/),
-            },
-          ]}
-          tooltip={{
-            title: "This is a required field",
-            icon: <Info size={16} color="white" />,
-          }}
-          initialValue={1}
-        >
-          <Input placeholder="Priority" />
-        </Form.Item>
-        <Form.Item
-          name="active"
-          label={<label className="text-white">Active</label>}
-          rules={[
-            {
-              required: true,
-              pattern: new RegExp(/^[0-9]+$/),
-            },
-          ]}
-          tooltip={{
-            title: "This is a required field",
-            icon: <Info size={16} color="white" />,
-          }}
-          initialValue={0}
-        >
-          <Input placeholder="Active" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+      <JsonForm fields={fields} submit={handleSubmit} />
     </div>
   );
 }
