@@ -53,7 +53,7 @@ export default function EditForm({
         initialValue: page_config_id,
       },
     ],
-    []
+    ["active", "created_at", "page_config_id", "priority", "updated_at"]
   );
   const handleSubmit = useCallback(
     (value: {
