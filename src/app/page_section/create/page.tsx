@@ -1,7 +1,7 @@
 "use client";
 
+import { Dayjs } from "dayjs";
 import { Info } from "lucide-react";
-import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { RequiredMark } from "@/types/util";
 import { useCallback, useState } from "react";
@@ -23,9 +23,9 @@ export default function CreatePage() {
 
   const handleSubmit = useCallback(
     (value: {
-      "ca-picker": Dayjs;
-      priority: number;
       active: number;
+      priority: number;
+      "ca-picker"?: Dayjs;
       page_config_id: number;
     }) =>
       fetch("/api/page_section", {
@@ -34,7 +34,8 @@ export default function CreatePage() {
           active: value.active,
           priority: value.priority,
           page_config_id: value.page_config_id,
-          created_at: value["ca-picker"].toISOString(),
+          created_at:
+            value["ca-picker"]?.toISOString() || new Date().toISOString(),
         }),
       }).then(() => {
         router.refresh();
@@ -57,18 +58,23 @@ export default function CreatePage() {
       >
         <Form.Item
           name="ca-picker"
-          label={<label className="text-white"> Created At</label>}
+          label={
+            <div className="flex flex-col">
+              <label className="text-white"> Created At</label>
+              <em className="text-gray-500 hover:text-gray-200 text-xs">
+                This will be set to current time when you submit
+              </em>
+            </div>
+          }
           rules={[
             {
               type: "object" as const,
-              required: true,
-              message: "Please select time!",
             },
           ]}
-          initialValue={dayjs(new Date())}
         >
           <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
         </Form.Item>
+
         <Form.Item
           name="page_config_id"
           label={<label className="text-white">Page Id</label>}
@@ -93,7 +99,7 @@ export default function CreatePage() {
           rules={[
             {
               required: true,
-              message: "Please provide priority",
+              message: "Priority must be a number",
               pattern: new RegExp(/^[0-9]+$/),
             },
           ]}
@@ -110,8 +116,8 @@ export default function CreatePage() {
           label={<label className="text-white">Active</label>}
           rules={[
             {
-              pattern: new RegExp(/^[0-9]+$/),
               required: true,
+              pattern: new RegExp(/^[0-9]+$/),
             },
           ]}
           tooltip={{

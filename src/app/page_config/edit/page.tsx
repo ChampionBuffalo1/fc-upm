@@ -16,7 +16,9 @@ export default async function EditPage({
   return (
     <div className="flex flex-col justify-center items-center h-full">
       {data.length === 0 && (
-        <span className="">No config found for id {searchParams.id}</span>
+        <span className="text-xl">
+          No config found for id {searchParams.id}
+        </span>
       )}
       {data.length === 1 && <EditForm {...data[0]} />}
     </div>
