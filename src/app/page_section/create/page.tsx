@@ -56,7 +56,7 @@ export default function CreatePage() {
         initialValues={{ requiredMarkValue: requiredMark }}
       >
         <Form.Item
-          name="ca-pickerV"
+          name="ca-picker"
           label={<label className="text-white"> Created At</label>}
           rules={[
             {
