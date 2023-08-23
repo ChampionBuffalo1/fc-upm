@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-full">
       <span className="text-xl m-4">Page Config Services</span>
-      <div className="flex justify-center">
+      <div className="flex flex-wrap justify-center">
         {data.length !== 0 &&
           data.map((config) => (
             <PageCard
@@ -23,7 +23,7 @@ export default async function Home() {
               editHref="/page_config/edit"
             />
           ))}
-        <CreateButton href="/page_config/create" />
+        <CreateButton href="/page_config/create" className="mt-2" />
       </div>
     </div>
   );
