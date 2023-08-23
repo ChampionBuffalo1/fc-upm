@@ -38,7 +38,7 @@ export default function CreatePage() {
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
-      <span className="text-xl mb-8">config details</span>
+      <span className="text-xl mb-8">New Page</span>
       <Form
         className="w-72 p-4"
         form={form}
