@@ -1,8 +1,8 @@
 import Link from "next/link";
 import mysql from "@/lib/mysql";
-import PageCard from "./PageCard";
+import PageCard from "@/components/PageCard";
 import { PageConfig } from "@/types/db";
-import { PlusCircle } from "lucide-react";
+import CreateButton from "@/components/CreateButton";
 
 export default async function Home() {
   const data = (await mysql.query(
@@ -14,12 +14,16 @@ export default async function Home() {
       <span className="text-xl m-4">Page Config Services</span>
       <div className="flex justify-center">
         {data.length !== 0 &&
-          data.map((config) => <PageCard key={config.id} {...config} />)}
-        <Link href="/page_config/create">
-          <button className="bg-white mx-2 w-44 p-4 text-xl rounded-md text-black flex justify-center items-center">
-            <PlusCircle size={26} className="text-red-600" />
-          </button>
-        </Link>
+          data.map((config) => (
+            <PageCard
+              key={config.id}
+              pid={config.id}
+              name={config.name}
+              clickHref="/page_section"
+              editHref="/page_config/edit"
+            />
+          ))}
+        <CreateButton href="/page_config/create" />
       </div>
     </div>
   );
