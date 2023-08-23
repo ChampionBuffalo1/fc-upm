@@ -1,11 +1,10 @@
 "use client";
 
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { PageConfig } from "@/types/db";
-import { RequiredMark } from "@/types/util";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { Button, DatePicker, Form, Input } from "antd";
+import { useCallback, useMemo } from "react";
+import JsonForm, { FormField } from "@/components/Forms";
 
 export default function EditForm({
   id,
@@ -14,17 +13,32 @@ export default function EditForm({
   name,
 }: PageConfig) {
   const router = useRouter();
-  const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] =
-    useState<RequiredMark>("optional");
-
-  const onRequiredTypeChange = ({
-    requiredMarkValue,
-  }: {
-    requiredMarkValue: RequiredMark;
-  }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
+  const fields: FormField = useMemo(
+    () => [
+      {
+        type: "date",
+        required: "This is a required field",
+        name: "ca-picker",
+        label: "Created At",
+        initialValue: created_at,
+      },
+      {
+        type: "date",
+        required: "This is a required field",
+        name: "ua-picker",
+        label: "Updated At",
+        initialValue: updated_at,
+      },
+      {
+        name: "name",
+        label: "Name",
+        required: "Please provide a name",
+        type: "string",
+        initialValue: name,
+      },
+    ],
+    [name, created_at, updated_at]
+  );
 
   const handleSubmit = useCallback(
     (value: { "ca-picker": Dayjs; "ua-picker": Dayjs; name: string }) =>
@@ -48,69 +62,7 @@ export default function EditForm({
   return (
     <div>
       <span className="text-2xl">Editing &quot;{name}&quot; config</span>
-      <Form
-        className="w-full pt-4"
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        requiredMark={requiredMark}
-        onValuesChange={onRequiredTypeChange}
-        initialValues={{ requiredMarkValue: requiredMark }}
-      >
-        <Form.Item
-          name="ca-picker"
-          label={<label className="text-white"> Created At</label>}
-          rules={[
-            {
-              type: "object" as const,
-              required: true,
-              message: "Please select time!",
-            },
-          ]}
-          initialValue={dayjs(created_at)}
-        >
-          <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-        </Form.Item>
-
-        <Form.Item
-          name="ua-picker"
-          label={
-            <div className="flex flex-col">
-              <label className="text-white"> Updated At</label>
-              <em className="text-gray-500 hover:text-gray-200 text-xs">
-                This will be updated to current time when you submit
-              </em>
-            </div>
-          }
-          rules={[
-            {
-              type: "object" as const,
-              required: true,
-              message: "Please select time!",
-            },
-          ]}
-          initialValue={dayjs(updated_at)}
-        >
-          <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-        </Form.Item>
-
-        <Form.Item
-          name="name"
-          label={<label className="text-white"> Name</label>}
-          rules={[
-            {
-              type: "string" as const,
-            },
-          ]}
-        >
-          <Input placeholder="name" defaultValue={name} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+      <JsonForm fields={fields} submit={handleSubmit} />
     </div>
   );
 }
