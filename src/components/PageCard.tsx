@@ -1,11 +1,13 @@
+import clsx from "clsx";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
 
 interface PageCardProps {
   pid: number;
   name: string;
-  clickHref: string;
   editHref: string;
+  clickHref: string;
+  className?: string;
 }
 
 export default function PageCard({
@@ -13,9 +15,15 @@ export default function PageCard({
   name,
   editHref,
   clickHref,
+  className,
 }: PageCardProps) {
   return (
-    <div className="bg-white mx-2 p-4 flex items-center rounded-md justify-between">
+    <div
+      className={clsx(
+        "bg-white mx-2 p-4 flex items-center rounded-md justify-between",
+        className
+      )}
+    >
       <Link
         href={{
           pathname: clickHref,
