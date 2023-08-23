@@ -49,7 +49,7 @@ export default function JsonForm({
           label={<label className="text-white">{field.label}</label>}
           rules={[
             {
-              type: field.type,
+              type: field.type !== "number" ? field.type : undefined,
               required: !!field.required,
               message: field.required,
               pattern:
