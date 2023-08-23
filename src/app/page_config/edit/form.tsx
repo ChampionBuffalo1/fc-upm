@@ -1,6 +1,5 @@
 "use client";
 
-import { Info } from "lucide-react";
 import dayjs, { Dayjs } from "dayjs";
 import { PageConfig } from "@/types/db";
 import { RequiredMark } from "@/types/util";
