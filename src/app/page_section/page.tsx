@@ -37,7 +37,6 @@ export default async function PageConfigServices({
             name={id ? `Section ${obj.id}` : `${obj.name} Section ${obj.id}`}
             clickHref="/service_config"
             editHref="/page_section/edit"
-            className="mt-2"
           />
         ))}
         <CreateButton href="/page_section/create" className="mt-2" />

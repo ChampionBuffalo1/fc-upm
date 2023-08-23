@@ -20,7 +20,7 @@ export default function PageCard({
   return (
     <div
       className={clsx(
-        "bg-white mx-2 p-4 flex items-center rounded-md justify-between",
+        "bg-white mt-2 mx-2 p-4 flex items-center rounded-md justify-between",
         className
       )}
     >
