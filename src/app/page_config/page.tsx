@@ -1,4 +1,3 @@
-import Link from "next/link";
 import mysql from "@/lib/mysql";
 import PageCard from "@/components/PageCard";
 import { PageConfig } from "@/types/db";
