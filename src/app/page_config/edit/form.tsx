@@ -43,12 +43,12 @@ export default function EditForm({
           router.back();
         })
         .catch(console.error),
-    [router]
+    [id, router]
   );
 
   return (
     <div>
-      <span className="text-2xl">Editing "{name}" config</span>
+      <span className="text-2xl">Editing &quot;{name}&quot; config</span>
       <Form
         className="w-full pt-4"
         form={form}
