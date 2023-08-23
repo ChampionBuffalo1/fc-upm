@@ -1,25 +1,49 @@
 "use client";
 
-import { Info } from "lucide-react";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
-import { RequiredMark } from "@/types/util";
-import { useCallback, useState } from "react";
-import { Button, DatePicker, Form, Input } from "antd";
+import { useCallback, useMemo } from "react";
+import JsonForm, { FormField } from "@/components/Forms";
 
 export default function CreatePage() {
   const router = useRouter();
-  const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] =
-    useState<RequiredMark>("optional");
-
-  const onRequiredTypeChange = ({
-    requiredMarkValue,
-  }: {
-    requiredMarkValue: RequiredMark;
-  }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
+  const fields: FormField = useMemo(
+    () => [
+      {
+        type: "date",
+        required: "Created at is required",
+        name: "ca-picker",
+        label: (
+          <div className="flex flex-col">
+            <label className="text-white">Created At</label>
+            <em className="text-gray-500 hover:text-gray-200 text-xs">
+              This will be set to current time when you submit
+            </em>
+          </div>
+        ),
+      },
+      {
+        type: "date",
+        required: "Updated At is required",
+        name: "ua-picker",
+        label: (
+          <div className="flex flex-col">
+            <label className="text-white">Created At</label>
+            <em className="text-gray-500 hover:text-gray-200 text-xs">
+              This will be set to current time when you submit
+            </em>
+          </div>
+        ),
+      },
+      {
+        name: "name",
+        label: "Name",
+        required: "Please provide a name",
+        type: "string",
+      },
+    ],
+    []
+  );
 
   const handleSubmit = useCallback(
     (value: { "ca-picker": Dayjs; name: string }) =>
@@ -40,57 +64,7 @@ export default function CreatePage() {
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
       <span className="text-xl mb-8">New Page</span>
-      <Form
-        className="w-72 p-4"
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        requiredMark={requiredMark}
-        onValuesChange={onRequiredTypeChange}
-        initialValues={{ requiredMarkValue: requiredMark }}
-      >
-        <Form.Item
-          name="ca-picker"
-          label={
-            <div className="flex flex-col">
-              <label className="text-white"> Created At</label>
-              <em className="text-gray-500 hover:text-gray-200 text-xs">
-                This will be set to current time when you submit
-              </em>
-            </div>
-          }
-          rules={[
-            {
-              type: "object" as const,
-            },
-          ]}
-        >
-          <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-        </Form.Item>
-
-        <Form.Item
-          name="name"
-          label={<label className="text-white"> Name</label>}
-          rules={[
-            {
-              type: "string" as const,
-              required: true,
-              message: "Please provide a name",
-            },
-          ]}
-          tooltip={{
-            title: "This is a required field",
-            icon: <Info size={16} color="white" />,
-          }}
-        >
-          <Input placeholder="Name" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+      <JsonForm fields={fields} submit={handleSubmit} />
     </div>
   );
 }
