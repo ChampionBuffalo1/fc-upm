@@ -26,7 +26,8 @@ export default function CreatePage() {
       fetch("/api/page_config", {
         method: "PUT",
         body: JSON.stringify({
-          created_at: value["ca-picker"].toISOString(),
+          created_at:
+            value["ca-picker"]?.toISOString() || new Date().toISOString(),
           name: value.name,
         }),
       }).then(() => {
@@ -50,15 +51,19 @@ export default function CreatePage() {
       >
         <Form.Item
           name="ca-picker"
-          label={<label className="text-white"> Created At</label>}
+          label={
+            <div className="flex flex-col">
+              <label className="text-white"> Created At</label>
+              <em className="text-gray-500 hover:text-gray-200 text-xs">
+                This will be set to current time when you submit
+              </em>
+            </div>
+          }
           rules={[
             {
               type: "object" as const,
-              required: true,
-              message: "Please select time!",
             },
           ]}
-          initialValue={dayjs(new Date())}
         >
           <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
         </Form.Item>
