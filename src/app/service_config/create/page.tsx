@@ -34,13 +34,13 @@ const fields: FormField = [
   {
     type: "date",
     required: "This is a required field",
-    name: "ca-picker",
+    name: "created_at",
     label: "Created At",
   },
   {
     type: "date",
     required: "This is a required field",
-    name: "ua-picker",
+    name: "updated_at",
     label: "Updated At",
   },
   {
@@ -55,14 +55,14 @@ const fields: FormField = [
     name: "priority",
     label: "Priority",
     placeholder: "Service Priority",
-    required: "Priority is required",
+    required: "Priority must be a number",
   },
   {
     type: "number",
     name: "active",
     label: "Active",
     placeholder: "Active state",
-    required: "This field is required",
+    required: "Active must be a number",
   },
   {
     type: "string",
