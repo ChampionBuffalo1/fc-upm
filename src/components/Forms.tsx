@@ -7,9 +7,9 @@ import { Button, DatePicker, Form, Input } from "antd";
 
 export type FormField = {
   name: string;
-  label: string | ReactNode;
   required?: string;
   placeholder?: string;
+  label: string | ReactNode;
   type: "date" | "number" | "string";
   initialValue?: string | number | Date;
 }[];
@@ -17,9 +17,11 @@ export type FormField = {
 export default function JsonForm({
   fields,
   submit,
+  layout,
 }: {
   fields: FormField;
   submit: (value: any) => void;
+  layout?: "vertical" | "horizontal";
 }) {
   const [form] = Form.useForm();
   const [requiredMark, setRequiredMarkType] =
@@ -37,7 +39,7 @@ export default function JsonForm({
     <Form
       className="w-full pt-4"
       form={form}
-      layout="vertical"
+      layout={layout || "vertical"}
       onFinish={submit}
       requiredMark={requiredMark}
       onValuesChange={onRequiredTypeChange}
