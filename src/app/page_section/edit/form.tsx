@@ -71,11 +71,15 @@ export default function EditForm({
           updated_at: value["updated_at"] || new Date(),
         }),
       })
-        .then(() => {
-          router.refresh();
-          router.back();
-        })
-        .catch(console.error),
+        .then((req) => req.json())
+        .then((json) => {
+          if (json.data.id) {
+            router.refresh();
+            router.back();
+          } else {
+            console.error("Unknown Error", json);
+          }
+        }),
     [id, router]
   );
 

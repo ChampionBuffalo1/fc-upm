@@ -21,10 +21,16 @@ export default function CreatePage() {
           ...value,
           created_at: value["created_at"] || new Date(),
         }),
-      }).then(() => {
-        router.refresh();
-        router.back();
-      }),
+      })
+        .then((req) => req.json())
+        .then((json) => {
+          if (json.data.id) {
+            router.refresh();
+            router.back();
+          } else {
+            console.error("Unknown Error", json);
+          }
+        }),
     [router]
   );
 

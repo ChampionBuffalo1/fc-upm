@@ -1,8 +1,8 @@
 "use client";
 
 import { Dayjs } from "dayjs";
+import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
 import JsonForm, { FormField } from "@/components/Forms";
 
 export default function CreatePage() {
@@ -12,10 +12,16 @@ export default function CreatePage() {
       fetch("/api/page_config", {
         method: "PUT",
         body: JSON.stringify(value),
-      }).then(() => {
-        router.refresh();
-        router.back();
-      }),
+      })
+        .then((req) => req.json())
+        .then((json) => {
+          if (json.data.id) {
+            router.refresh();
+            router.back();
+          } else {
+            console.error("Unknown Error", json);
+          }
+        }),
     [router]
   );
 

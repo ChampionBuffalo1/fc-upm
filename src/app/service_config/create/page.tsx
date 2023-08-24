@@ -13,10 +13,16 @@ export default function CreatePage() {
       fetch("/api/service_config", {
         method: "PUT",
         body: JSON.stringify(value),
-      }).then(() => {
-        router.refresh();
-        router.back();
-      }),
+      })
+        .then((req) => req.json())
+        .then((json) => {
+          if (json.data.id) {
+            router.refresh();
+            router.back();
+          } else {
+            console.error("Unknown Error", json);
+          }
+        }),
     [router]
   );
 
@@ -65,32 +71,29 @@ const fields: FormField = [
     required: "Active must be a number",
   },
   {
-    type: "string",
+    type: "json",
     name: "app_version",
     label: "App Version",
     placeholder: "App Version",
-    required: "This field is required",
+    required: "This is a required field",
   },
   {
-    type: "string",
+    type: "json",
     name: "base_action",
     label: "Base Action",
     placeholder: "Base Action",
-    required: "This field is required",
   },
   {
-    type: "string",
+    type: "json",
     name: "static_info",
     label: "Static Info",
     placeholder: "Static Info",
-    required: "This field is required",
   },
   {
-    type: "string",
+    type: "json",
     name: "fallback_info",
     label: "Fallback Info",
     placeholder: "Fallback Info",
-    required: "This field is required",
   },
   {
     type: "string",
@@ -100,7 +103,7 @@ const fields: FormField = [
     required: "This field is required",
   },
   {
-    type: "string",
+    type: "json",
     name: "content_structure",
     label: "Content Structure",
     placeholder: "Content Structure",
@@ -111,6 +114,5 @@ const fields: FormField = [
     name: "base_activity_name",
     label: "Base Activity Name",
     placeholder: "Base Activity Name",
-    required: "This field is required",
   },
 ];
