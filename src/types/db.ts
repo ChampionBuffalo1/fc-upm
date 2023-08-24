@@ -22,12 +22,12 @@ export interface ServiceConfig extends DateTime {
   id: number;
   name: string;
   active: number;
-  base_activity_name: string;
+  base_activity_name?: string;
   priority: number;
-  base_action: Json;
-  static_info: Json;
+  base_action?: Json;
+  static_info?: Json;
   app_version: Json;
-  fallback_info: Json;
+  fallback_info?: Json;
   content_type: string;
   content_structure: Json;
 }
