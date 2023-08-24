@@ -10,9 +10,9 @@ export type FormField = {
   label: string | ReactNode;
   placeholder?: string;
   required?: string;
-  type: "date" | "number" | "string";
+  type: "date" | "number" | "string" | "json";
   initialValue?: string | number | Date;
-  // Only used if type === number
+  // Only use if type === number
   min?: number;
   max?: number;
 }[];
@@ -60,15 +60,34 @@ export default function JsonForm({
             )
           }
           rules={[
-            {
-              type: field.type !== "number" ? field.type : undefined,
-              required: !!field.required,
-              message: field.required,
-              transform: (value) =>
-                field.type === "number" ? parseInt(value) : value,
-              pattern:
-                field.type === "number" ? new RegExp(/^[0-9]+$/) : undefined,
-            },
+            field.type === "json"
+              ? {
+                  validator: (_, value) => {
+                    if (field.type === "json") {
+                      if (value) {
+                        try {
+                          JSON.parse(value);
+                        } catch (e) {
+                          return Promise.reject("Invalid JSON");
+                        }
+                      } else {
+                        return !!field.required
+                          ? Promise.reject(field.required)
+                          : Promise.resolve();
+                      }
+                    }
+                  },
+                  required: !!field.required,
+                }
+              : {
+                  type: field.type !== "number" ? field.type : undefined,
+                  required: !!field.required,
+                  message: field.required,
+                  pattern:
+                    field.type === "number"
+                      ? new RegExp(/^[0-9]+$/)
+                      : undefined,
+                },
           ]}
           initialValue={
             field.type === "date"
