@@ -3,15 +3,18 @@
 import dayjs from "dayjs";
 import { ReactNode, useState } from "react";
 import { RequiredMark } from "@/types/util";
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, InputNumber } from "antd";
 
 export type FormField = {
   name: string;
-  required?: string;
-  placeholder?: string;
   label: string | ReactNode;
+  placeholder?: string;
+  required?: string;
   type: "date" | "number" | "string";
   initialValue?: string | number | Date;
+  // Only used if type === number
+  min?: number;
+  max?: number;
 }[];
 
 export default function JsonForm({
@@ -61,6 +64,8 @@ export default function JsonForm({
               type: field.type !== "number" ? field.type : undefined,
               required: !!field.required,
               message: field.required,
+              transform: (value) =>
+                field.type === "number" ? parseInt(value) : value,
               pattern:
                 field.type === "number" ? new RegExp(/^[0-9]+$/) : undefined,
             },
@@ -73,6 +78,8 @@ export default function JsonForm({
         >
           {field.type === "date" ? (
             <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+          ) : field.type === "number" ? (
+            <InputNumber min={field.min} max={field.max} className="w-full" />
           ) : (
             <Input placeholder={field.placeholder || field.name} />
           )}
