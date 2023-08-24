@@ -18,30 +18,30 @@ export default function EditForm({
   const fields: FormField = useMemo(
     () => [
       {
-        name: "ca-picker",
+        name: "created_at",
         label: "Created At",
-        required: "Please input created_at!",
+        required: "This field is required",
         type: "date",
         initialValue: created_at,
       },
       {
-        name: "ua-picker",
+        name: "updated_at",
         label: "Updated At",
-        required: "Please input updated_at!",
+        required: "This field is required",
         type: "date",
         initialValue: updated_at,
       },
       {
         name: "active",
         label: "Active",
-        required: "Please input active!",
+        required: "Active must be a number",
         type: "number",
         initialValue: active,
       },
       {
         name: "priority",
         label: "Priority",
-        required: "Please input priority!",
+        required: "priority must be a number",
         type: "number",
         initialValue: priority,
       },
@@ -49,30 +49,26 @@ export default function EditForm({
         type: "number",
         name: "page_config_id",
         label: "Page Config Id",
-        required: "Please input page_config_id!",
+        required: "Config Id must be a number",
         initialValue: page_config_id,
       },
     ],
-    ["active", "created_at", "page_config_id", "priority", "updated_at"]
+    [active, created_at, page_config_id, priority, updated_at]
   );
   const handleSubmit = useCallback(
     (value: {
-      "ca-picker": Dayjs;
-      "ua-picker": Dayjs;
-      priority: string;
       active: string;
+      priority: string;
+      created_at: Dayjs;
+      updated_at: Dayjs;
       page_config_id: string;
     }) =>
       fetch("/api/page_section", {
         method: "PATCH",
         body: JSON.stringify({
           id,
-          active: parseInt(value.active),
-          priority: parseInt(value.priority),
-          page_config_id: parseInt(value.page_config_id),
-          created_at: value["ca-picker"].toISOString(),
-          updated_at:
-            value["ua-picker"]?.toISOString() || new Date().toISOString(),
+          ...value,
+          updated_at: value["updated_at"] || new Date(),
         }),
       })
         .then(() => {

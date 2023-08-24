@@ -12,7 +12,7 @@ export default function CreatePage() {
       {
         type: "date",
         required: "Created at is required",
-        name: "ca-picker",
+        name: "created_at",
         label: (
           <div className="flex flex-col">
             <label className="text-white">Created At</label>
@@ -25,7 +25,7 @@ export default function CreatePage() {
       {
         type: "date",
         required: "Updated At is required",
-        name: "ua-picker",
+        name: "updated_at",
         label: (
           <div className="flex flex-col">
             <label className="text-white">Created At</label>
@@ -46,14 +46,10 @@ export default function CreatePage() {
   );
 
   const handleSubmit = useCallback(
-    (value: { "ca-picker": Dayjs; name: string }) =>
+    (value: { created_at: Dayjs; updated_at: Dayjs; name: string }) =>
       fetch("/api/page_config", {
         method: "PUT",
-        body: JSON.stringify({
-          created_at:
-            value["ca-picker"]?.toISOString() || new Date().toISOString(),
-          name: value.name,
-        }),
+        body: JSON.stringify(value),
       }).then(() => {
         router.refresh();
         router.back();

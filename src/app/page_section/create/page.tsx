@@ -11,9 +11,16 @@ export default function CreatePage() {
     () => [
       {
         type: "date",
-        name: "ca-picker",
-        label: "Created At",
         required: "Created At is required",
+        name: "created_at",
+        label: (
+          <div className="flex flex-col">
+            <label className="text-white">Created At</label>
+            <em className="text-gray-500 hover:text-gray-200 text-xs">
+              This will be set to current time when you submit
+            </em>
+          </div>
+        ),
       },
       {
         type: "number",
@@ -42,17 +49,14 @@ export default function CreatePage() {
     (value: {
       active: number;
       priority: number;
-      "ca-picker"?: Dayjs;
+      created_at?: Dayjs;
       page_config_id: number;
     }) =>
       fetch("/api/page_section", {
         method: "PUT",
         body: JSON.stringify({
-          active: value.active,
-          priority: value.priority,
-          page_config_id: value.page_config_id,
-          created_at:
-            value["ca-picker"]?.toISOString() || new Date().toISOString(),
+          ...value,
+          created_at: value["created_at"] || new Date(),
         }),
       }).then(() => {
         router.refresh();

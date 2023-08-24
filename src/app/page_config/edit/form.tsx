@@ -18,15 +18,22 @@ export default function EditForm({
       {
         type: "date",
         required: "This is a required field",
-        name: "ca-picker",
+        name: "created_at",
         label: "Created At",
         initialValue: created_at,
       },
       {
         type: "date",
         required: "This is a required field",
-        name: "ua-picker",
-        label: "Updated At",
+        name: "updated_at",
+        label: (
+          <div className="flex flex-col">
+            <label className="text-white">Updated At</label>
+            <em className="text-gray-500 hover:text-gray-200 text-xs">
+              This will be set to current time when you submit
+            </em>
+          </div>
+        ),
         initialValue: updated_at,
       },
       {
@@ -41,14 +48,13 @@ export default function EditForm({
   );
 
   const handleSubmit = useCallback(
-    (value: { "ca-picker": Dayjs; "ua-picker": Dayjs; name: string }) =>
+    (value: { created_at: Dayjs; updated_at: Dayjs; name: string }) =>
       fetch("/api/page_config", {
         method: "PATCH",
         body: JSON.stringify({
           id,
-          created_at: value["ca-picker"].toISOString(),
-          updated_at: value["ua-picker"].toISOString(),
-          name: value.name,
+          ...value,
+          updated_at: value["updated_at"] || new Date(),
         }),
       })
         .then(() => {
