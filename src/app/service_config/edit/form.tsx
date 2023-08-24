@@ -132,7 +132,7 @@ export default function EditForm({
 
   const handleSubmit = useCallback(
     (value: Record<string, unknown>) =>
-      fetch("/api/search_config", {
+      fetch("/api/service_config", {
         method: "PATCH",
         body: JSON.stringify({
           id,
