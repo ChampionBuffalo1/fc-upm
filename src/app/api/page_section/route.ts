@@ -40,7 +40,7 @@ export async function PATCH(req: NextRequest) {
   );
   await mysql.query(sqlQuery, [...values, body.id]);
   return NextResponse.json({
-    body: {
+    data: {
       id: body.id,
     },
   });
