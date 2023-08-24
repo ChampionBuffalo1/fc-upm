@@ -62,7 +62,7 @@ export default function JsonForm({
           rules={[
             field.type === "json"
               ? {
-                  validator: (_, value) => {
+                  validator: async (_, value) => {
                     if (field.type === "json") {
                       if (value) {
                         try {
