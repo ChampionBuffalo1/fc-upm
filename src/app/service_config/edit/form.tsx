@@ -17,6 +17,7 @@ export default function EditForm({
   static_info,
   content_type,
   fallback_info,
+  page_section_id,
   content_structure,
   base_activity_name,
 }: ServiceConfig) {
@@ -113,6 +114,14 @@ export default function EditForm({
         placeholder: "Base Activity Name",
         initialValue: base_activity_name,
       },
+      {
+        type: "number",
+        name: "page_section_id",
+        label: "Page Section ID",
+        initialValue: page_section_id,
+        placeholder: "Page Section ID",
+        required: "Each section must have a page config id",
+      },
     ],
     [
       name,
@@ -125,6 +134,7 @@ export default function EditForm({
       static_info,
       content_type,
       fallback_info,
+      page_section_id,
       content_structure,
       base_activity_name,
     ]

@@ -115,4 +115,10 @@ const fields: FormField = [
     label: "Base Activity Name",
     placeholder: "Base Activity Name",
   },
+  {
+    type: "number",
+    name: "page_section_id",
+    label: "Page Config ID",
+    required: "Each section must have a page config id",
+  },
 ];

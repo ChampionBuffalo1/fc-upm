@@ -30,6 +30,7 @@ export interface ServiceConfig extends DateTime {
   fallback_info?: Json;
   content_type: string;
   content_structure: Json;
+  page_section_id?: number;
 }
 
 export interface PageSectionServiceMapping {
