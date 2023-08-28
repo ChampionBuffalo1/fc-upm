@@ -10,7 +10,7 @@ export default async function EditPage({
   };
 }) {
   const data = (await mysql.query(
-    "SELECT * FROM `service_config` WHERE id = ?",
+    "SELECT sc.*, page_section_id FROM `service_config` sc LEFT JOIN page_section_service_mapping psm ON sc.id = psm.service_id WHERE sc.id = ?",
     [searchParams.id]
   )) as [ServiceConfig] | [];
   return (
