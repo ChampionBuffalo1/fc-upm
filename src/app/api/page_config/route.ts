@@ -1,11 +1,6 @@
 import mysql from "@/lib/mysql";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const data = await mysql.query("SELECT id, name FROM `page_config`");
-  return NextResponse.json({ data });
-}
-
 export async function PUT(req: NextRequest) {
   const data = await req.json();
   if (!data.name)
