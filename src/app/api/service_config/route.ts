@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest) {
   const body = await req.json();
+
   const db = (await mysql.query(
     "INSERT INTO `service_config`(created_at, updated_at, name, priority, active, app_version, base_action, static_info, fallback_info, content_type, content_structure, base_activity_name) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
@@ -21,6 +22,11 @@ export async function PUT(req: NextRequest) {
     ]
   )) as { insertId: number };
 
+  await mysql.query(
+    "INSERT INTO `page_section_service_mapping`(page_section_id, service_id) VALUES(?, ?)",
+    [body.page_section_id, db.insertId]
+  );
+
   return NextResponse.json({
     data: {
       id: db.insertId,
@@ -30,10 +36,10 @@ export async function PUT(req: NextRequest) {
 
 const allowedKeys = [
   "name",
-  "created_at",
-  "update_at",
-  "priority",
   "active",
+  "priority",
+  "update_at",
+  "created_at",
   "app_version",
   "base_action",
   "static_info",
@@ -48,8 +54,22 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({
       message: "id is required",
     });
-
   const validKeys = Object.keys(body).filter((k) => allowedKeys.includes(k));
+  if (body.page_section_id) {
+    await mysql.query(
+      "UPDATE `page_section_service_mapping` SET page_section_id = ? WHERE service_id = ?",
+      [body.page_section_id, body.id]
+    );
+    delete body.page_section_id;
+    if (validKeys.keys.length === 0) {
+      return NextResponse.json({
+        data: {
+          id: body.id,
+        },
+      });
+    }
+  }
+
   if (validKeys.length === 0)
     return NextResponse.json({
       message: "no valid keys",
